@@ -10,6 +10,7 @@
 #include "esp8266-base.h"
 
 #include "DS18B20.h"
+#include "LEDDriver.h"
 
 #define HTTP_PORT 80
 #define HOSTNAME "blank"

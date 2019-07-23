@@ -8,9 +8,11 @@ SettingsData settingsData = SettingsData();
 Logger logger = Logger();
 Settings settings = Settings(&logger, (void*)(&settingsData), sizeof(SettingsData), initSettings);
 WiFiManager wifi = WiFiManager(&logger, &settingsData.network);
-SystemCheck systemCheck = SystemCheck(&logger);
-WebServer webServer = WebServer(&settingsData.network, &logger, &systemCheck);
+WebServer webServer = WebServer(&settingsData.network, &logger, NULL);
+
 DS18B20 ds18b20 = DS18B20(13);
+LEDDriver ledDriver = LEDDriver(12, 14);
+// RTC ...
 
 void setup()
 { 
@@ -21,7 +23,6 @@ void setup()
     settings.begin();
     wifi.begin();
     webServer.begin();
-    // systemCheck.begin();
 
     pinMode(14, OUTPUT);
     digitalWrite(14, HIGH);
