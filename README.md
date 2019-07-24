@@ -31,3 +31,5 @@ There are also a few additional libraries requred:
 ## PCB
 
 The PCB is availabe at https://easyeda.com/funnybrum/smalrt-bulb. This is still work in progress and the current PCB almost works with v1. Almost because you need to switch the OneWire pin to GPIO13.
+
+Required libraries: OneWire, DallasTemperature
