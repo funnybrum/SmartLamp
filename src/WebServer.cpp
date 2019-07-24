@@ -2,8 +2,8 @@
 
 char buffer[4096];
 
-WebServer::WebServer(NetworkSettings* networkSettings, Logger* logger, SystemCheck* systemCheck)
-    :WebServerBase(networkSettings, logger, systemCheck) {
+WebServer::WebServer(NetworkSettings* networkSettings, Logger* logger)
+    :WebServerBase(networkSettings, logger) {
 }
 
 void WebServer::registerHandlers() {
@@ -44,20 +44,17 @@ void WebServer::handle_settings() {
 
 void WebServer::handle_dim() {
     uint16_t val = server->arg("dim").toInt();
-    analogWrite(12, val);
+    controller.setBrightness(val);
     logger->log("Dimming to %d", val);
     server->send(200, "text/html", "Done");
-    logger->log("LED temperature is %d", ds18b20.getTemperature());
 }
 
 void WebServer::handle_on() {
-    digitalWrite(14, HIGH);
+    controller.setPower(true);
     server->send(200);
-    logger->log("LED temperature is %d", ds18b20.getTemperature());
 }
 
 void WebServer::handle_off() {
-    digitalWrite(14, LOW);
+    controller.setPower(false);
     server->send(200);
-    logger->log("LED temperature is %d", ds18b20.getTemperature());
 }

@@ -8,10 +8,14 @@ SettingsData settingsData = SettingsData();
 Logger logger = Logger();
 Settings settings = Settings(&logger, (void*)(&settingsData), sizeof(SettingsData), initSettings);
 WiFiManager wifi = WiFiManager(&logger, &settingsData.network);
-WebServer webServer = WebServer(&settingsData.network, &logger, NULL);
+WebServer webServer = WebServer(&settingsData.network, &logger);
 
-DS18B20 ds18b20 = DS18B20(13);
 LEDDriver ledDriver = LEDDriver(12, 14);
+DS18B20 tempSensor = DS18B20(13);
+Controller controller = Controller(
+    &ledDriver,
+    &tempSensor
+);
 // RTC ...
 
 void setup()
@@ -20,15 +24,14 @@ void setup()
     while (! Serial) {
         delay(1);
     }
+    logger.begin();
     settings.begin();
     wifi.begin();
     webServer.begin();
 
-    pinMode(14, OUTPUT);
-    digitalWrite(14, HIGH);
-
-    pinMode(12, OUTPUT);
-    analogWrite(12, 500);
+    ledDriver.begin();
+    tempSensor.begin();
+    controller.begin();
 
     wifi.connect();
 }
@@ -36,9 +39,14 @@ void setup()
 int count = 0;
 
 void loop() {
+    logger.loop();
+    settings.loop();
     wifi.loop();
     webServer.loop();
-    settings.loop();
-    // systemCheck.loop();
+
+    ledDriver.loop();
+    tempSensor.loop();
+    controller.loop();
+
     delay(1000);
 }

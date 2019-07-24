@@ -11,6 +11,7 @@
 
 #include "DS18B20.h"
 #include "LEDDriver.h"
+#include "Controller.h"
 
 #define HTTP_PORT 80
 #define HOSTNAME "blank"
@@ -24,4 +25,4 @@ extern Settings settings;
 extern SettingsData settingsData;
 extern WiFiManager wifi;
 extern SystemCheck systemCheck;
-extern DS18B20 ds18b20;
+extern Controller controller;

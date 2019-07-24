@@ -1,4 +1,4 @@
-#define PROGMEM ICACHE_RODATA_ATTR
+// #define PROGMEM ICACHE_RODATA_ATTR
 
 const char CONFIG_PAGE[] PROGMEM = R"=====(
 <HTML>
