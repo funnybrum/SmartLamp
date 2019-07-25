@@ -3,7 +3,7 @@
 const char CONFIG_PAGE[] PROGMEM = R"=====(
 <HTML>
  <HEAD>
-   <TITLE>No WiFi POC</TITLE>
+   <TITLE>The "smart" bulb</TITLE>
  </HEAD>
  <BODY>
   <form action="/settings" method="get">

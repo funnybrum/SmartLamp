@@ -23,7 +23,7 @@ void WebServer::handle_settings() {
     bool save = false;
 
     wifi.parse_config_params(this, save);
-    // rtc.parseConfigParams(this);
+    rtc.parseConfigParams(this);
 
     if (save) {
         settings.save();
@@ -33,7 +33,7 @@ void WebServer::handle_settings() {
     char rtc_settings[strlen_P(RTC_CONFIG_PAGE) + 32];
 
     wifi.get_config_page(network_settings);
-    // rtc.getConfigPage(rtc_settings);
+    rtc.getConfigPage(rtc_settings);
 
     sprintf_P(
         buffer,

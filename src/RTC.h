@@ -6,12 +6,12 @@
 const char RTC_CONFIG_PAGE[] PROGMEM = R"=====(
 <fieldset style='display: inline-block; width: 300px'>
 <legend>Time settings</legend>
-Date:
+Date:<br>
 <input type="text" size="4" name="year" value="%d">
 <input type="text" size="2" name="month" value="%d">
 <input type="text" size="2" name="day" value="%d"><br>
 <small><em>year/month/day</em></small><br><br>
-Time:
+Time:<br>
 <input type="text" size="2" name="hour" value="%d">
 <input type="text" size="2" name="minute" value="%d"><br>
 <small><em>hour/minute</em></small><br><br>

@@ -35,6 +35,8 @@ void setup()
     tempSensor.begin();
     controller.begin();
 
+    controller.setBrightness(25);
+    controller.setPower(true);
     wifi.connect();
 }
 
@@ -49,5 +51,5 @@ void loop() {
     tempSensor.loop();
     controller.loop();
 
-    delay(1000);
+    delay(100);
 }
