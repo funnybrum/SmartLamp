@@ -16,7 +16,8 @@ Controller controller = Controller(
     &ledDriver,
     &tempSensor
 );
-// RTC ...
+
+Clock rtc = Clock();
 
 void setup()
 { 
@@ -29,6 +30,7 @@ void setup()
     wifi.begin();
     webServer.begin();
 
+    rtc.begin();
     ledDriver.begin();
     tempSensor.begin();
     controller.begin();
@@ -36,14 +38,13 @@ void setup()
     wifi.connect();
 }
 
-int count = 0;
-
 void loop() {
     logger.loop();
     settings.loop();
     wifi.loop();
     webServer.loop();
 
+    rtc.loop();
     ledDriver.loop();
     tempSensor.loop();
     controller.loop();

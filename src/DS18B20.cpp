@@ -8,8 +8,7 @@ DS18B20::DS18B20(uint8_t pin) {
 void DS18B20::begin() {
     _sensor->begin();
     _lastConversion = millis() - 1000 * 10;
-    logger.log("Found %d OneWire devices.", _sensor->getDeviceCount());
-    logger.log("Found %d DS18 devices.", _sensor->getDS18Count());
+    logger.log("Found %d DS18B20 devices.", _sensor->getDS18Count());
 }
 
 void DS18B20::loop() {

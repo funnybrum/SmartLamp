@@ -26,9 +26,9 @@ void Controller::loop() {
 
     // Simple logic for decreasing the brightness. Start dimming at 76C and fully turn off
     // the LED at 85C.
-    if (ledTemp > 75) {
-        uint8_t max_brightness = map(ledTemp, 76, 85, 0, 100);
-        logger.log("LED at %dC, limitting max brighness to %d%%.", ledTemp, max_brightness);
+    if (ledTemp >= 75) {
+        max_brightness = 10 * max(85 - ledTemp, 0);
+        logger.log("LED at %dC, limitting max brighness to %d%%", ledTemp, max_brightness);
     }
 
     // TODO: Additional logic based on the current time to adjust the brightness.

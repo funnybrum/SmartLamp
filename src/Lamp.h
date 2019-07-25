@@ -12,6 +12,7 @@
 #include "DS18B20.h"
 #include "LEDDriver.h"
 #include "Controller.h"
+#include "RTC.h"
 
 #define HTTP_PORT 80
 #define HOSTNAME "blank"
@@ -24,5 +25,5 @@ extern Logger logger;
 extern Settings settings;
 extern SettingsData settingsData;
 extern WiFiManager wifi;
-extern SystemCheck systemCheck;
 extern Controller controller;
+extern Clock rtc;
