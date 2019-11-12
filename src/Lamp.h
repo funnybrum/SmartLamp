@@ -15,7 +15,7 @@
 #include "RTC.h"
 
 #define HTTP_PORT 80
-#define HOSTNAME "blank"
+#define HOSTNAME "smart-lamp"
 
 struct SettingsData {
     NetworkSettings network;

@@ -27,18 +27,22 @@ void setup()
     }
     logger.begin();
     settings.begin();
-    wifi.begin();
     webServer.begin();
 
-    rtc.begin();
+    // rtc.begin();
     ledDriver.begin();
-    tempSensor.begin();
+    // tempSensor.begin();
     controller.begin();
 
-    controller.setBrightness(25);
-    controller.setPower(true);
+    controller.setBrightness(0);
+    controller.setPower(false);
+
+    delay(100);
+    wifi.begin();
     wifi.connect();
 }
+
+bool oneWireStarted = false;
 
 void loop() {
     logger.loop();
@@ -46,7 +50,12 @@ void loop() {
     wifi.loop();
     webServer.loop();
 
-    rtc.loop();
+    if (millis() > 120000 && !oneWireStarted) {
+        tempSensor.begin();
+        delay(100);
+    }
+
+    // rtc.loop();
     ledDriver.loop();
     tempSensor.loop();
     controller.loop();

@@ -12,6 +12,9 @@ void DS18B20::begin() {
 }
 
 void DS18B20::loop() {
+    if (millis() < 120000) {
+        return;
+    }
     if (millis() - _lastConversion > 5000) {
         // Request temperature every 5 seconds.
         _sensor->requestTemperatures();
@@ -19,6 +22,9 @@ void DS18B20::loop() {
 }
 
 int8_t DS18B20::getTemperature() {
+    if (millis() < 120000) {
+        return 0;
+    }
     // TODO - adjust to proper interval.
     // For some reason there should be delay between the requestTemperature and getTemp calls. Without such
     // the call below results in failure.
