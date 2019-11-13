@@ -14,6 +14,7 @@ class LEDDriver {
     private:
         uint8_t _dimPin;
         uint8_t _enablePin;
+        int _currentPWM;
         // TODO: Add calibration value that specify the analog value of the max brightness. This
         // should be unique per lamp instance (resistor tolerance at least would impact it).
 };

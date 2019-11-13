@@ -5,6 +5,8 @@ LEDDriver::LEDDriver(uint8_t dimPin, uint8_t enablePin) {
     _enablePin = enablePin;
     pinMode(_dimPin, OUTPUT);
     pinMode(_enablePin, OUTPUT);
+    off();
+    setBrightness(0);
 }
 
 void LEDDriver::begin() {

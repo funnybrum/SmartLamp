@@ -21,6 +21,10 @@ struct SettingsData {
     NetworkSettings network;
 };
 
+// Based on CXA1304 datasheet.
+#define LED_OFF_TEMP 90
+#define LED_DIM_TEMP 75
+
 extern Logger logger;
 extern Settings settings;
 extern SettingsData settingsData;

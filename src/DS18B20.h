@@ -14,5 +14,7 @@ class DS18B20 {
     private:
         DallasTemperature* _sensor;
         OneWire* _oneWire;
-        unsigned long _lastConversion;
+        unsigned long _lastRead;
+        bool _pendingUpdate;
+        int _temp;
 };

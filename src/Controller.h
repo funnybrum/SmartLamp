@@ -9,8 +9,11 @@ class Controller {
         void loop();
         void setBrightness(uint8_t brightness);
         void setPower(bool enable);
+        bool getPower();
  
     private:
+        void calculateTargetBrightness();
+
         LEDDriver* _led;
         DS18B20* _tempSensor;
         Logger* _logger;
@@ -18,5 +21,4 @@ class Controller {
         uint8_t _targetBrightness;
         unsigned long _lastCorrection;
         bool _powered;
-
 };
