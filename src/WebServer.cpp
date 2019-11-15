@@ -10,6 +10,7 @@ void WebServer::registerHandlers() {
     server->on("/", std::bind(&WebServer::handle_root, this));
     server->on("/settings", std::bind(&WebServer::handle_settings, this));
     server->on("/dim", std::bind(&WebServer::handle_dim, this));
+    server->on("/auto", std::bind(&WebServer::handle_auto, this));
     server->on("/on", std::bind(&WebServer::handle_on, this));
     server->on("/off", std::bind(&WebServer::handle_off, this));
 }
@@ -33,6 +34,8 @@ void WebServer::handle_settings() {
     char rtc_settings[strlen_P(RTC_CONFIG_PAGE) + 32];
 
     wifi.get_config_page(network_settings);
+
+    rtc.update();
     rtc.getConfigPage(rtc_settings);
 
     sprintf_P(
@@ -47,15 +50,20 @@ void WebServer::handle_dim() {
     uint16_t val = server->arg("dim").toInt();
     controller.setBrightness(val);
     logger->log("Dimming to %d", val);
-    server->send(200, "text/html", "Done");
+    server->send(200, "text/html", "manual");
+}
+
+void WebServer::handle_auto() {
+    controller.setAutoBrightness();
+    server->send(200, "text/html", "auto");
 }
 
 void WebServer::handle_on() {
-    controller.setPower(true);
-    server->send(200);
+    controller.turnOn();
+    server->send(200, "text/html", "on");
 }
 
 void WebServer::handle_off() {
-    controller.setPower(false);
-    server->send(200);
+    controller.turnOn();;
+    server->send(200, "text/html", "off");
 }

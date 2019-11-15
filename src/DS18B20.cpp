@@ -30,7 +30,7 @@ void DS18B20::loop() {
 
     // Higher pool inteval results in less WiFi interferences.
     unsigned long poolInterval = DS18B20_POOL_INTERVAL_LONG;
-    if (controller.getPower() && _temp > LED_DIM_TEMP) {
+    if (controller.isOn() && _temp > LED_DIM_TEMP) {
         poolInterval = DS18B20_POOL_INTERVAL_SHORT;
     }
 

@@ -2,16 +2,22 @@
 
 
 void Clock::begin() {
-    _lastRTCRead = millis() - 10000;
-
     if (!_rtc.begin() || !_rtc.isrunning()) {
         logger.log("RTC failed!");
+    } else {
+        update();
     }
 }
 
 void Clock::loop() {
-    if (millis() - _lastRTCRead < 1000) {
-        // We don't care about seconds. Read the RTC each 10 seconds.
+    if (millis() - _lastRTCRead > 60000) {
+        update();
+    }
+}
+
+void Clock::update() {
+    if (!_rtc.isrunning()) {
+        logger.log("RTC not running.");
         return;
     }
     _lastRTCRead = millis();
@@ -68,4 +74,3 @@ void Clock::parseConfigParams(WebServerBase* webServer) {
         _rtc.adjust(_now);
     }
 }
-

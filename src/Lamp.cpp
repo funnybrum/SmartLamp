@@ -29,13 +29,10 @@ void setup()
     settings.begin();
     webServer.begin();
 
-    // rtc.begin();
+    rtc.begin();
     ledDriver.begin();
     tempSensor.begin();
     controller.begin();
-
-    controller.setBrightness(0);
-    controller.setPower(false);
 
     delay(100);
     wifi.begin();
@@ -48,11 +45,10 @@ void loop() {
     wifi.loop();
     webServer.loop();
 
-    // if (millis() > 120000 && !oneWireStarted) {
+    if (millis() > 120000 ) {
+        rtc.loop();
+    }
 
-    // }
-
-    // rtc.loop();
     ledDriver.loop();
     tempSensor.loop();
     controller.loop();

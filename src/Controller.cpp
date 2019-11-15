@@ -3,67 +3,104 @@
 Controller::Controller(LEDDriver* led, DS18B20* tempSensor) {
     _led = led;
     _tempSensor = tempSensor;
-    _powered = false;
 }
 
 void Controller::begin() {
-    _lastCorrection = millis() - 1000;
+    if (_state == ON) {
+        _brightness = calcTargetBrightness();
+        _led->setBrightness(_brightness);
+        _led->on();
+    }
 }
 
 void Controller::loop() {
-    if (!_powered) {
+    if (_state == OFF) {
         return;
     }
 
-    _calculateTargetBrightness();
-
-    uint8_t ledTemp = _tempSensor->getTemperature();
-    uint8_t max_brightness = 100;
-
-    // Simple logic for decreasing the brightness. Start dimming at 75C and fully turn off
-    // the LED at 90C.
-    // TODO - PID controller will fit better here. Or at least some threshold to limit the
-    // disco effect...
-    if (ledTemp >= LED_DIM_TEMP) {
-        max_brightness = 10 * max(LED_DIM_TEMP - ledTemp, 0);
-        logger.log("LED at %dC, limitting max brighness to %d%%", ledTemp, max_brightness);
-    }
-
-    // TODO: Additional logic based on the current time to adjust the brightness.
-
-    if (_targetBrightness > _brightness) {
+    int targetBrightness = min(calcTargetBrightness(), calcMaxBrightness());
+    if (_brightness < targetBrightness) {
         _brightness++;
     }
 
-    if (_targetBrightness < _brightness) {
+    if (_brightness > targetBrightness) {
         _brightness--;
     }
 
-    if (_brightness > max_brightness) {
-        _brightness = max_brightness;
-    }
-
     _led->setBrightness(_brightness);
-    logger.log("Temp: %d, brightness: %d", ledTemp, _brightness);
+    logger.log("Temp: %d, brightness: %d", _tempSensor->getTemperature(), _brightness);
 }
 
 void Controller::setBrightness(uint8_t brightness) {
-    _targetBrightness = brightness;
+    _brightness = brightness;
+    _mode = MANUAL;
 }
 
-void Controller::setPower(bool enable) {
-    _powered = enable;
-    if (_powered) {
+void Controller::setAutoBrightness() {
+    // Switch to auto brightness mode.
+}
+
+void Controller::turnOn() {
+    if (_state == OFF) {
+        _state = ON;
         _led->on();
-    } else {
+    }
+}
+
+void Controller::turnOff() {
+    if (_state == ON) {
+        _state = OFF;
         _led->off();
     }
 }
 
-bool Controller::getPower() {
-    return _powered;
+bool Controller::isOn() {
+    return _state == ON;
 }
 
-void Controller::calculateTargetBrightness() {
+#define EV_DIM_START 22
+#define EV_DIM_FULL 24
+#define MOR_DIM_FULL 6
+#define MOR_DIM_END 8
 
+int Controller::calcTargetBrightness() {
+    // In manual mode - return current value;
+    if (_mode == MANUAL) {
+        return _brightness;
+    }
+
+    int hour = rtc.getHour();
+    int minute = rtc.getMinute();
+
+    // Note: the below would fail if the dimming/undimming interval starts and end in different
+    // days.
+    if (hour < MOR_DIM_FULL) {
+        // Night mode.
+        return 0;
+    } else if (MOR_DIM_FULL <= hour && hour < MOR_DIM_END) {
+        // Morning undimming mode.
+        int m = (hour - MOR_DIM_FULL) * 60 + minute;
+        return map(m, 0, (MOR_DIM_END - MOR_DIM_FULL) * 60, 0, 100);
+    } else if (MOR_DIM_END <= hour && hour < EV_DIM_START) {
+        // Day mode.
+        return 100;
+    } else if (EV_DIM_START <= hour && hour < EV_DIM_FULL) {
+        // Evening dimming mode.
+        int m = (hour - EV_DIM_START) * 60 + minute;
+        return map(m, 0, (EV_DIM_FULL - EV_DIM_START) * 60, 100, 0);
+    } else {
+        // Night mode
+        return 0;
+    }
+}
+
+int Controller::calcMaxBrightness() {
+    // Limit max brightnes based on the LED temperature.
+    uint8_t ledTemp = _tempSensor->getTemperature();
+
+    if (ledTemp < LED_DIM_TEMP) {
+        return 100;
+    }
+
+    return map(ledTemp, LED_DIM_TEMP, LED_OFF_TEMP, 100, 0);
 }

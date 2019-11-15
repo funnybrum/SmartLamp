@@ -23,6 +23,7 @@ class Clock {
     public:
         void begin();
         void loop();
+        void update();
 
         uint16_t getYear();
         uint8_t getMonth();
