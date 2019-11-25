@@ -37,7 +37,7 @@ void Controller::setBrightness(uint8_t brightness) {
 }
 
 void Controller::setAutoBrightness() {
-    // Switch to auto brightness mode.
+    _mode = AUTO;
 }
 
 void Controller::turnOn() {
