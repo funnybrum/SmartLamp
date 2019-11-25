@@ -17,4 +17,9 @@ class LEDDriver {
         int _currentPWM;
         // TODO: Add calibration value that specify the analog value of the max brightness. This
         // should be unique per lamp instance (resistor tolerance at least would impact it).
+
+        int _dimMatrix[2][3] = {
+            {0, 30, 100}, // Dim %
+            {823, 716, 0} // PWM
+        };
 };

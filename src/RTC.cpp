@@ -10,6 +10,9 @@ void Clock::begin() {
 }
 
 void Clock::loop() {
+    // Once each minute read the RTC. This is good enough as we don't care for the seconds.
+    // Further optimization can be added if needed by syncing the millis with the RTC and reducing
+    // the number of I2C reads.
     if (millis() - _lastRTCRead > 60000) {
         update();
     }
