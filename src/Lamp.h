@@ -17,6 +17,7 @@
 #define HTTP_PORT 80
 #define HOSTNAME "smart-lamp"
 
+// TODO: settings.begin at start of begin().
 struct SettingsData {
     NetworkSettings network;
 };

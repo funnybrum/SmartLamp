@@ -58,8 +58,8 @@ bool Controller::isOn() {
     return _state == ON;
 }
 
-#define EV_DIM_START 22
-#define EV_DIM_FULL 24
+#define EV_DIM_START 20
+#define EV_DIM_FULL 23
 #define MOR_DIM_FULL 6
 #define MOR_DIM_END 8
 

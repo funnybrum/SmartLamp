@@ -21,20 +21,32 @@ Clock rtc = Clock();
 
 void setup()
 { 
-    Serial.begin(115200);
-    while (! Serial) {
-        delay(1);
-    }
     logger.begin();
-    settings.begin();
-    webServer.begin();
+
+    // If RX pin is LOW - enter debug mode.
+    pinMode(3, INPUT);
+    if (digitalRead(3) == LOW) {
+        logger.log("Entering DEBUG mode.");
+        webServer.begin();
+        wifi.begin();
+        wifi.connect();
+        while (true) {
+            wifi.loop();
+            webServer.loop();
+            delay(100);
+        }
+    }
+
 
     rtc.begin();
     ledDriver.begin();
     tempSensor.begin();
     controller.begin();
 
-    delay(100);
+    Serial.begin(115200);
+    settings.begin();
+    webServer.begin();
+
     wifi.begin();
     wifi.connect();
 }
@@ -45,10 +57,7 @@ void loop() {
     wifi.loop();
     webServer.loop();
 
-    if (millis() > 120000 ) {
-        rtc.loop();
-    }
-
+    rtc.loop();
     ledDriver.loop();
     tempSensor.loop();
     controller.loop();
