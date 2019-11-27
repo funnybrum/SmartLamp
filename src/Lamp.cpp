@@ -5,7 +5,7 @@ void initSettings() {
 }
 
 SettingsData settingsData = SettingsData();
-Logger logger = Logger();
+Logger logger = Logger(false);
 Settings settings = Settings(&logger, (void*)(&settingsData), sizeof(SettingsData), initSettings);
 WiFiManager wifi = WiFiManager(&logger, &settingsData.network);
 WebServer webServer = WebServer(&settingsData.network, &logger);

@@ -18,7 +18,7 @@ class Controller {
         void begin();
         void loop();
 
-        void setBrightness(uint8_t brightness);
+        void setBrightness(int brightness);
         void setAutoBrightness();
 
         void turnOn();
@@ -31,7 +31,7 @@ class Controller {
 
         LEDDriver* _led;
         DS18B20* _tempSensor;
-        uint8_t _brightness = 0;
+        int _brightness = 0;
 
         Mode _mode = AUTO;
         State _state = ON;

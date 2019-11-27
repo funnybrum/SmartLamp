@@ -28,11 +28,15 @@ void Controller::loop() {
     }
 
     _led->setBrightness(_brightness);
-    logger.log("Temp: %d, brightness: %d", _tempSensor->getTemperature(), _brightness);
+    logger.log("Temp: %d, brightness: %d.%d",
+               _tempSensor->getTemperature(),
+               _brightness/10,
+               _brightness%10);
 }
 
-void Controller::setBrightness(uint8_t brightness) {
-    _brightness = brightness;
+void Controller::setBrightness(int brightness) {
+    // Here we take %, but brightness stores it in 0.1% units.
+    _brightness = brightness * 10;
     _mode = MANUAL;
 }
 
@@ -59,7 +63,7 @@ bool Controller::isOn() {
 }
 
 #define EV_DIM_START 20
-#define EV_DIM_FULL 23
+#define EV_DIM_FULL 24
 #define MOR_DIM_FULL 6
 #define MOR_DIM_END 8
 
@@ -80,14 +84,14 @@ int Controller::calcTargetBrightness() {
     } else if (MOR_DIM_FULL <= hour && hour < MOR_DIM_END) {
         // Morning undimming mode.
         int m = (hour - MOR_DIM_FULL) * 60 + minute;
-        return map(m, 0, (MOR_DIM_END - MOR_DIM_FULL) * 60, 0, 100);
+        return map(m, 0, (MOR_DIM_END - MOR_DIM_FULL) * 60, 0, 1000);
     } else if (MOR_DIM_END <= hour && hour < EV_DIM_START) {
         // Day mode.
-        return 100;
+        return 1000;
     } else if (EV_DIM_START <= hour && hour < EV_DIM_FULL) {
         // Evening dimming mode.
         int m = (hour - EV_DIM_START) * 60 + minute;
-        return map(m, 0, (EV_DIM_FULL - EV_DIM_START) * 60, 100, 0);
+        return map(m, 0, (EV_DIM_FULL - EV_DIM_START) * 60, 1000, 0);
     } else {
         // Night mode
         return 0;
@@ -102,5 +106,5 @@ int Controller::calcMaxBrightness() {
         return 100;
     }
 
-    return map(ledTemp, LED_DIM_TEMP, LED_OFF_TEMP, 100, 0);
+    return map(ledTemp, LED_DIM_TEMP, LED_OFF_TEMP, 1000, 0);
 }

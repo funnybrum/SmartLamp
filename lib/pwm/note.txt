@@ -1,0 +1,3 @@
+pwm.c is moved to the src folder.
+
+Set PWM_USE_NMI to 1 (#define PWM_USE_NMI 1). The default interupt (TIMER1) seems to be used by the OneWire or the I2C libraries. This results in flashes due to PWM glitches. Switching to NMI seems to be resolving the issue.
