@@ -22,8 +22,6 @@ void Clock::update() {
     if (!_rtc.isrunning()) {
         logger.log("RTC not running.");
         return;
-    } else {
-        logger.log("RTC is running.");
     }
     _lastRTCRead = millis();
     _now = _rtc.now();

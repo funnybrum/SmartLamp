@@ -103,7 +103,7 @@ int Controller::calcMaxBrightness() {
     uint8_t ledTemp = _tempSensor->getTemperature();
 
     if (ledTemp < LED_DIM_TEMP) {
-        return 100;
+        return 1000;
     }
 
     return map(ledTemp, LED_DIM_TEMP, LED_OFF_TEMP, 1000, 0);
