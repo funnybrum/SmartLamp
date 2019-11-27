@@ -62,5 +62,10 @@ void loop() {
     tempSensor.loop();
     controller.loop();
 
+    if (millis() > 180000) {
+        // Turn off the WiFi 3 minutes after startup.
+        wifi.disconnect();
+    }
+
     delay(100);
 }

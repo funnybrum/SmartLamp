@@ -28,10 +28,7 @@ void Controller::loop() {
     }
 
     _led->setBrightness(_brightness);
-    logger.log("Temp: %d, brightness: %d.%d",
-               _tempSensor->getTemperature(),
-               _brightness/10,
-               _brightness%10);
+    logger.log("Temp: %d, brightness: %.1f", _tempSensor->getTemperature(), _brightness/10.0);
 }
 
 void Controller::setBrightness(int brightness) {
@@ -62,8 +59,8 @@ bool Controller::isOn() {
     return _state == ON;
 }
 
-#define EV_DIM_START 20
-#define EV_DIM_FULL 24
+#define EV_DIM_START 19
+#define EV_DIM_FULL 23
 #define MOR_DIM_FULL 6
 #define MOR_DIM_END 8
 
